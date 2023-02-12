@@ -1,18 +1,18 @@
-import 'package:amazon_clone/constants/global_variables.dart';
+import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
+
+import '../../../shard/constants/global_variables.dart';
 import 'package:amazon_clone/features/auth/serveses/serveses.dart';
 import 'package:amazon_clone/features/order_detials/order_detials_screen.dart';
 import 'package:amazon_clone/shard/cubit/cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../common/widget/widget.dart';
+import '../../../shard/common/widget/widget.dart';
 import '../../../shard/cubit/stats.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
-
-  @override
+@override
   Widget build(BuildContext context) {
     return BlocConsumer<AmazonCubit, AmazonStates>(
         listener: (context, state) {},
@@ -57,7 +57,7 @@ class AccountScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              topBottons(),
+              topBottons(context),
               const SizedBox(
                 height: 20,
               ),
@@ -94,7 +94,7 @@ class AccountScreen extends StatelessWidget {
                           const EdgeInsets.only(left: 10, top: 20, right: 0),
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: AmazonCubit.get(context).ordersList?.length,
+                          itemCount: AmazonCubit.get(context).ordersList!.length ,
                           itemBuilder: ((context, index) {
                             return GestureDetector(
                               onTap: (){
@@ -116,7 +116,7 @@ class AccountScreen extends StatelessWidget {
   }
 }
 
-Widget topBottons() => Column(
+Widget topBottons(context) => Column(
       children: [
         Row(
           children: [
@@ -136,7 +136,9 @@ Widget topBottons() => Column(
         Row(
           children: [
             accountBotton(
-              onPressed: () {},
+              onPressed: () {
+                navigatAndFinsh(context, AuthScreen());
+              },
               text: 'Log Out',
             ),
             accountBotton(

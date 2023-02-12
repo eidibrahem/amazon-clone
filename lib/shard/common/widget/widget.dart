@@ -1,4 +1,5 @@
-import 'package:amazon_clone/constants/global_variables.dart';
+
+import '/../../shard/constants/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

@@ -2,12 +2,10 @@ import 'package:amazon_clone/features/auth/serveses/serveses.dart';
 import 'package:amazon_clone/features/product_detials/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../constants/global_variables.dart';
+import '../../../shard/constants/global_variables.dart';
 import '../../../models/product.dart';
 import '../../../shard/cubit/cubit.dart';
 import '../../../shard/cubit/stats.dart';
-import '../../account/screens/account_screen.dart';
 
 class CategoryDealeScreen extends StatelessWidget {
   CategoryDealeScreen({this.category});
@@ -69,8 +67,12 @@ class CategoryDealeScreen extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: GestureDetector(
-                        onTap: (){
-                          navigatTo(context, ProductDetailsScreen(productData: productData ,));
+                        onTap: () {
+                          navigatTo(
+                              context,
+                              ProductDetailsScreen(
+                                productData: productData,
+                              ));
                         },
                         child: Column(
                           children: [

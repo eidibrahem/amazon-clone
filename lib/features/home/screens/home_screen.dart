@@ -6,8 +6,7 @@ import 'package:amazon_clone/features/search/search_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../constants/global_variables.dart';
+import '../../../shard/constants/global_variables.dart';
 import '../../../shard/cubit/cubit.dart';
 import '../../../shard/cubit/stats.dart';
 import 'category_deal_screen.dart';
@@ -70,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                                       width: 1,
                                     ),
                                   ),
-                                  hintText: "Search Amazon.in",
+                                  hintText: "Search Amazon.eg",
                                   hintStyle: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 17,
@@ -100,7 +99,7 @@ class HomeScreen extends StatelessWidget {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  AdderssBox(name: "Eid", address: ""),
+                  AdderssBox(name: "Eid", address: "${cubit.userModel!.data!.address}"),
                   const SizedBox(height: 10),
                   /* TopCategories(
                    
@@ -159,84 +158,92 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   CarouselSlidert(
                       list: AmazonCubit.get(context).carouselImages),
-                 cubit.productDay==null?const Center(child: CircularProgressIndicator())
-                 :cubit.productDay.name!.isEmpty?
-                const SizedBox()
-                 : GestureDetector(
-                  onTap: (){
-                    navigatTo(context, ProductDetailsScreen(productData: cubit.productDay));
-                  },
-                   child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.only(top: 15, left: 10),
-                          child: const Text(
-                            'Deal of the day',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                        Image.network(
-                          cubit.productDay.images![0],//'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdkBpK4GnL7VLTWJdlQ2kI4b6OFt2AdOewYg&usqp=CAU',
-                          fit: BoxFit.contain,
-                          height: 235,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                          ),
-                          child:  Text(
-                            '\$ ${cubit.productDay.price}',
-                            style: TextStyle(fontSize: 18),
-                            maxLines: 2,
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                            top: 5,
-                            right: 40,
-                          ),
-                          child:  Text(
-                            '${cubit.productDay.name}',
-                            style: const TextStyle(
-                              overflow: TextOverflow.ellipsis,
+                  cubit.productDay.images!.length== 0 
+                      ? const Center(child: CircularProgressIndicator())
+                      : cubit.productDay.name!.isEmpty
+                          ? const SizedBox()
+                          : GestureDetector(
+                              onTap: () {
+                                navigatTo(
+                                    context,
+                                    ProductDetailsScreen(
+                                        productData: cubit.productDay));
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    padding: const EdgeInsets.only(
+                                        top: 15, left: 10),
+                                    child: const Text(
+                                      'Deal of the day',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                  Image.network(
+                                    cubit.productDay.images![
+                                        0], //'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdkBpK4GnL7VLTWJdlQ2kI4b6OFt2AdOewYg&usqp=CAU',
+                                    fit: BoxFit.contain,
+                                    height: 235,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    padding: const EdgeInsets.only(
+                                      left: 10,
+                                    ),
+                                    child: Text(
+                                      '\$ ${cubit.productDay.price}',
+                                      style: TextStyle(fontSize: 18),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    padding: const EdgeInsets.only(
+                                      left: 10,
+                                      top: 5,
+                                      right: 40,
+                                    ),
+                                    child: Text(
+                                      '${cubit.productDay.name}',
+                                      style: const TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: cubit.productDay.images!
+                                          .map(
+                                            (e) => Image.network(
+                                              e, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb8hiP3fjnYQU7IolYQoGmDX37Hot2m6w3Kpmo2u8KvtMINWOyS_PzpSJQFXluqVJVYKM&usqp=CAU",
+                                              height: 100,
+                                              width: 100,
+                                              fit: BoxFit.fitWidth,
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 15,
+                                    ).copyWith(left: 15),
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      'See all deals',
+                                      style: TextStyle(
+                                        color: Colors.cyan[800],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                            maxLines: 2,
-                          ),
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children:cubit.productDay.images!.map((e) => Image.network(
-                                e,//"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb8hiP3fjnYQU7IolYQoGmDX37Hot2m6w3Kpmo2u8KvtMINWOyS_PzpSJQFXluqVJVYKM&usqp=CAU",
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.fitWidth,
-                              ), ).toList(),
-                              
-                           
-                        
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 15,
-                          ).copyWith(left: 15),
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'See all deals',
-                            style: TextStyle(
-                              color: Colors.cyan[800],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                 ),
                 ],
               ),
             ),

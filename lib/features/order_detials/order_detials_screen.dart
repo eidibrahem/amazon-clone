@@ -1,8 +1,7 @@
-import 'package:amazon_clone/common/widget/widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../constants/global_variables.dart';
+import '../../../shard/constants/global_variables.dart';
 import '../../models/order.dart';
 import '../../shard/cubit/cubit.dart';
 import '../../shard/cubit/stats.dart';
@@ -14,7 +13,6 @@ import '../search/search_screen.dart';
 class OrderDetailsScreen extends StatelessWidget {
   OrderDetailsScreen({
     required this.orderData,
-    
   });
   final Order? orderData;
   var searchController = TextEditingController();
@@ -127,7 +125,7 @@ class OrderDetailsScreen extends StatelessWidget {
                               orderData!.orderdAt!.toInt(),
                             ),
                           )}"),
-                         Text("Order Id :       ${orderData!.id!}"),
+                          Text("Order Id :       ${orderData!.id!}"),
                           Text("Order Id :      \$${orderData!.totalPrice}"),
                         ],
                       ),
@@ -208,10 +206,11 @@ class OrderDetailsScreen extends StatelessWidget {
                         ),
                         child: Stepper(
                           currentStep: orderData!.status != null
-                              ? orderData!.status!>3? 3: orderData!.status!.toInt() 
+                              ? orderData!.status! > 3
+                                  ? 3
+                                  : orderData!.status!.toInt()
                               : 0,
                           controlsBuilder: (context, details) {
-                            
                             return const SizedBox();
                           },
                           steps: [
@@ -221,27 +220,26 @@ class OrderDetailsScreen extends StatelessWidget {
                                   'Your order is yet to be delivered'),
                               isActive: orderData!.status! >= 0,
                               state: orderData!.status! >= 0
-                                    ? StepState.complete
-                                    : StepState.indexed,
-                              
+                                  ? StepState.complete
+                                  : StepState.indexed,
                             ),
                             Step(
-                                title: const Text('Completed'),
-                                content: const Text(
-                                    'Your order has been delivered , you are yet to sign.'),
-                                isActive: orderData!.status! > 1,
-                                state: orderData!.status! > 1
-                                    ? StepState.complete
-                                    : StepState.indexed,
-                                    ),
+                              title: const Text('Completed'),
+                              content: const Text(
+                                  'Your order has been delivered , you are yet to sign.'),
+                              isActive: orderData!.status! > 1,
+                              state: orderData!.status! > 1
+                                  ? StepState.complete
+                                  : StepState.indexed,
+                            ),
                             Step(
                               title: const Text('Received'),
                               content: const Text(
                                   'Your order has been delivered and signed by you '),
                               isActive: orderData!.status! > 2,
                               state: orderData!.status! > 2
-                                    ? StepState.complete
-                                    : StepState.indexed,
+                                  ? StepState.complete
+                                  : StepState.indexed,
                             ),
                             Step(
                               title: const Text('Delivered'),
@@ -249,8 +247,8 @@ class OrderDetailsScreen extends StatelessWidget {
                                   'Your order has been delivered and signed by you !'),
                               isActive: orderData!.status! >= 3,
                               state: orderData!.status! > 1
-                                    ? StepState.complete
-                                    : StepState.indexed,
+                                  ? StepState.complete
+                                  : StepState.indexed,
                             ),
                           ],
                         )),

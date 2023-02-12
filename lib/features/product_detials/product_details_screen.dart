@@ -3,18 +3,19 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-import '../../common/widget/widget.dart';
-import '../../constants/global_variables.dart';
+import '../../../shard/common/widget/widget.dart';
+import '../../../shard/constants/global_variables.dart';
 import '../../shard/cubit/cubit.dart';
 import '../../shard/cubit/stats.dart';
 import '../auth/serveses/serveses.dart';
 import '../search/search_screen.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  ProductDetailsScreen({this.productData,});
+  ProductDetailsScreen({
+    this.productData,
+  });
   final Product? productData;
-  
+
   var searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -110,7 +111,10 @@ class ProductDetailsScreen extends StatelessWidget {
                       Text(
                         productData!.toString(),
                       ),
-                      Stars(rating:productData!.rating.avargeRate==null?2:productData!.rating.avargeRate.toDouble()),
+                      Stars(
+                          rating: productData!.rating.avargeRate == null
+                              ? 2
+                              : productData!.rating.avargeRate.toDouble()),
                     ],
                   ),
                 ),
@@ -166,7 +170,8 @@ class ProductDetailsScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("${productData!.description.toString()}  product quantity :  ${productData!.quantity}"),
+                  child: Text(
+                      "${productData!.description.toString()}  product quantity :  ${productData!.quantity}"),
                 ),
                 Container(
                   height: 5,
@@ -207,21 +212,26 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 RatingBar.builder(
-                    itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: GlobalVariables.secondaryColor,
-                        ),
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4,),
-
-                        initialRating:cubit.findRating(product: productData),
-                        minRating: 1 ,
-                    onRatingUpdate: (rate) {
-                    cubit.rateProduct(context: context,product: productData,rating: rate, );
-                    
-                    },)
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: GlobalVariables.secondaryColor,
+                  ),
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                  ),
+                  initialRating: cubit.findRating(product: productData),
+                  minRating: 1,
+                  onRatingUpdate: (rate) {
+                    cubit.rateProduct(
+                      context: context,
+                      product: productData,
+                      rating: rate,
+                    );
+                  },
+                )
               ],
             ),
           ),

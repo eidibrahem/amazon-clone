@@ -1,17 +1,13 @@
-import 'package:amazon_clone/common/widget/widget.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../constants/global_variables.dart';
+import '../../../shard/common/widget/widget.dart';
+import '../../../shard/constants/global_variables.dart';
 import '../../models/order.dart';
 import '../../shard/admin_cubit/cubit.dart';
 import '../../shard/admin_cubit/states.dart';
-import '../../shard/cubit/cubit.dart';
 import 'package:flutter/material.dart';
-
-import '../auth/serveses/serveses.dart';
-import '../search/search_screen.dart';
 
 class OrderDetailsAdminScreen extends StatelessWidget {
   OrderDetailsAdminScreen({

@@ -1,15 +1,12 @@
-import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/features/account/screens/account_screen.dart';
 import 'package:amazon_clone/features/auth/serveses/serveses.dart';
 import 'package:amazon_clone/models/product.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shard/admin_cubit/cubit.dart';
 import '../../../shard/admin_cubit/states.dart';
 import 'add_product_screen.dart';
-
 class PostsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

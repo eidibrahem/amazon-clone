@@ -1,10 +1,9 @@
 
 
-import 'package:amazon_clone/constants/global_variables.dart';
+import '../../../shard/constants/global_variables.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../shard/cubit/cubit.dart';
 import '../../../shard/cubit/stats.dart';
 
@@ -85,7 +84,7 @@ class HomeLayout extends StatelessWidget {
                     ),
                     child: Badge(
                       elevation: 0,
-                      badgeContent:Text("${cubit.userModel?.data?.cart!.cart!.length}") ,
+                      badgeContent:cubit.userModel?.data?.cart!.cart!.length==null? Text(''):Text("${cubit.userModel?.data?.cart!.cart!.length}") ,
                       badgeColor: Colors.white,
                       child: const Icon(Icons.shopping_cart_outlined)) ,
                   ),

@@ -1,4 +1,3 @@
-import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/features/admin/screens/admin_layout.dart';
 import 'package:amazon_clone/shard/cubit/cubit.dart';
 import 'package:amazon_clone/shard/cubit/stats.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/auth/screens/auth_screen.dart';
 import 'features/home/screens/home_layout.dart';
 import 'shard/admin_cubit/cubit.dart';
+import 'shard/constants/global_variables.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +50,8 @@ class MyApp extends StatelessWidget {
               home: AmazonCubit.get(context).isToken()
                   ? (AmazonCubit.get(context).userModel?.data?.type != 'user'
                       ? AdminLayout() //HomeLayout(AmazonCubit.get(context).getToken())
-                      : HomeLayout(AmazonCubit.get(context).getToken()))
+                      : HomeLayout(AmazonCubit.get(context).getToken())
+                      )
                   : AuthScreen(),
             );
           }),

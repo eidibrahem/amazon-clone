@@ -1,16 +1,14 @@
-import 'package:amazon_clone/constants/global_variables.dart';
+import 'package:amazon_clone/shard/constants/global_variables.dart';
 import 'package:amazon_clone/shard/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../common/widget/widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'; 
+import '../../../shard/common/widget/widget.dart';
 import '../../../shard/cubit/stats.dart';
 import '../../../shard/network/local/cache_helper.dart';
 import '../../admin/screens/admin_layout.dart';
 import '../../home/screens/home_layout.dart';
 import '../serveses/serveses.dart';
-
 // ignore: use_key_in_widget_constructors
 class AuthScreen extends StatelessWidget {
   var signUpFormKey = GlobalKey<FormState>();

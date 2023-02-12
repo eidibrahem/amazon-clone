@@ -1,4 +1,3 @@
-
 import 'package:amazon_clone/models/sales.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';

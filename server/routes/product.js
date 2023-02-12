@@ -1,8 +1,8 @@
 const express = require("express");
 const productRouter = express.Router();
 const {Product} = require("../models/product");
-
-productRouter.get("/api/products", async (req, res) => {
+const auth = require("../middlewares/auth");
+productRouter.get("/api/products",auth, async (req, res) => {
   try {
     var products = await Product.find({ category: req.query.category });
     //res.json({...products });
@@ -11,7 +11,7 @@ productRouter.get("/api/products", async (req, res) => {
     res.json({ status: false, msg: e.message });
   }
 });
-productRouter.get("/api/products/search/:name", async (req, res) => {
+productRouter.get("/api/products/search/:name",auth, async (req, res) => {
   try {
     var products = await Product.find({
       name: { $regex: req.params.name, $options: "i" },
@@ -23,7 +23,7 @@ productRouter.get("/api/products/search/:name", async (req, res) => {
   }
 });
 
-productRouter.post("/api/rate-product", async (req, res) => {
+productRouter.post("/api/rate-product",auth, async (req, res) => {
   try {
     const { id, rating, userId } = req.body;
     var product = await Product.findById(id);
@@ -44,7 +44,7 @@ productRouter.post("/api/rate-product", async (req, res) => {
     res.json({ status: false, msg: e.message });
   }
 });
-productRouter.get("/api/deal-of-day", async (req, res) => {
+productRouter.get("/api/deal-of-day",auth, async (req, res) => {
   try {
     var products = await Product.find({});
     products= products.sort((a, b) => {

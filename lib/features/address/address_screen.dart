@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay/pay.dart';
 
-import '../../common/widget/widget.dart';
-import '../../constants/global_variables.dart';
+import '../../../shard/common/widget/widget.dart';
+import '../../shard/constants/global_variables.dart';
 import '../../shard/cubit/cubit.dart';
 import '../../shard/cubit/stats.dart';
 
@@ -65,7 +65,7 @@ class AddressScreen extends StatelessWidget {
                         ],
                       ),
                     Form(
-                      key:cubit.adressFormKey,
+                      key:cubit.addressFormKey,
                       child: Column(
                         children: [
                           costomFormField(

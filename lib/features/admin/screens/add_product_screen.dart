@@ -1,10 +1,8 @@
-import 'package:amazon_clone/common/widget/widget.dart';
-import 'package:amazon_clone/constants/global_variables.dart';
-import 'package:amazon_clone/shard/cubit/cubit.dart';
+import '../../../shard/constants/global_variables.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dotted_border/dotted_border.dart';
-
+import '../../../shard/common/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shard/admin_cubit/cubit.dart';
@@ -24,25 +22,25 @@ class AddProductScreen extends StatelessWidget {
     return BlocConsumer<AdminCubit, AdminStates>(
       listener: (context, state) {
         if (state is AddProductSeccessState) {
-            if (state.res!.status == true) {
-              // print(state.userMoDel?.data!.token);|| state is FetchAllProducsSeccessState
-              ShowToast(
-                  text: state.res!.msg.toString(), state: ToastStates.SUCCESS);
-            } else {
-              ShowToast(
-                  text: state.res!.msg.toString(), state: ToastStates.ERROR);
-            }
+          if (state.res!.status == true) {
+            // print(state.userMoDel?.data!.token);|| state is FetchAllProducsSeccessState
+            ShowToast(
+                text: state.res!.msg.toString(), state: ToastStates.SUCCESS);
+          } else {
+            ShowToast(
+                text: state.res!.msg.toString(), state: ToastStates.ERROR);
           }
-          if (state is FetchAllProducsSeccessState) {
-            if (state.res!.status == true) {
-              // print(state.userMoDel?.data!.token);|| 
-              ShowToast(
-                  text: state.res!.msg.toString(), state: ToastStates.SUCCESS);
-            } else {
-              ShowToast(
-                  text: state.res!.msg.toString(), state: ToastStates.ERROR);
-            }
+        }
+        if (state is FetchAllProducsSeccessState) {
+          if (state.res!.status == true) {
+            // print(state.userMoDel?.data!.token);||
+            ShowToast(
+                text: state.res!.msg.toString(), state: ToastStates.SUCCESS);
+          } else {
+            ShowToast(
+                text: state.res!.msg.toString(), state: ToastStates.ERROR);
           }
+        }
       },
       builder: (context, state) {
         var cubit = AdminCubit.get(context);
@@ -150,7 +148,7 @@ class AddProductScreen extends StatelessWidget {
                     ),
                     costomFormField(
                         Controller: PriceController,
-                        type: TextInputType.name,
+                        type: TextInputType.number,
                         validator: (String? value) {
                           if (value!.isEmpty) {
                             return 'please enter your Price ';
@@ -162,7 +160,7 @@ class AddProductScreen extends StatelessWidget {
                     ),
                     costomFormField(
                         Controller: quantityController,
-                        type: TextInputType.name,
+                        type: TextInputType.number ,
                         validator: (String? value) {
                           if (value!.isEmpty) {
                             return 'please enter your Quantity ';
@@ -190,21 +188,23 @@ class AddProductScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                     ConditionalBuilder(
-                              condition: state is! AddProducLoudingState,
-                              fallback: (context) => const Center(child: CircularProgressIndicator()),
-                              builder: (context) => defaultTextButton(
+                    ConditionalBuilder(
+                      condition: state is! AddProducLoudingState,
+                      fallback: (context) =>
+                          const Center(child: CircularProgressIndicator()),
+                      builder: (context) => defaultTextButton(
                           text: 'sell',
                           onPress: () {
-                            if (addProductFormKey.currentState!.validate()&&cubit.Images.isNotEmpty) {
+                            if (addProductFormKey.currentState!.validate() &&
+                                cubit.Images.isNotEmpty) {
                               AdminCubit.get(context).sellProduct(
                                   context: context,
                                   name: ProductNameController.text,
                                   description: discriptionController.text,
                                   price: double.parse(PriceController.text),
-                                  quantity: double.parse(quantityController.text),
+                                  quantity:
+                                      double.parse(quantityController.text),
                                   category: cubit.categoriesValue);
-                                 
                             }
                           }),
                     )

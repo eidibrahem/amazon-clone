@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../../constants/global_variables.dart';
+import '../../../shard/constants/global_variables.dart';
 import '../../models/product.dart';
 import '../../shard/cubit/cubit.dart';
 import '../../shard/cubit/stats.dart';
@@ -104,7 +104,7 @@ class SearchScreen extends StatelessWidget {
                   ),
                   body: Column(
                     children: [
-                      AdderssBox(name: "Eid", address: ""),
+                      AdderssBox(name: "Eid", address: "${cubit.userModel!.data!.address}"),
                       SizedBox(
                         height: 10,
                       ),
@@ -115,10 +115,12 @@ class SearchScreen extends StatelessWidget {
                             final Product productData =
                                 cubit.searchProducsList![index];
                             return GestureDetector(
-                              onTap: (){
-                              
-                          navigatTo(context, ProductDetailsScreen(productData: productData,));
-                        
+                              onTap: () {
+                                navigatTo(
+                                    context,
+                                    ProductDetailsScreen(
+                                      productData: productData,
+                                    ));
                               },
                               child: Column(
                                 children: [
@@ -127,61 +129,69 @@ class SearchScreen extends StatelessWidget {
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 10),
                                     height: 140,
-                                    child: Row(children: [
+                                    child: Row(
+                                      children: [
                                       Image.network(
                                         productData.images![0],
                                         fit: BoxFit.contain,
                                         width: 135,
                                         height: 135,
                                       ),
-                                      Column(
-                                       mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 235,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0),
-                                            child: Text(
-                                              productData.name.toString(),
-                                              style: TextStyle(fontSize: 16),
-                                              maxLines: 2,
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 235,
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 10.0),
+                                              child: Text(
+                                                productData.name.toString(),
+                                                style: TextStyle(fontSize: 16),
+                                                maxLines: 2,
+                                              ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 235,
-                                            padding: const EdgeInsets.only(
-                                                top: 5, left: 10),
-                                            child: Stars(rating: productData.rating.avargeRate ),
-                                          ),
-                                          Container(
-                                            width: 235,
-                                            padding: const EdgeInsets.only(
-                                                top: 5, left: 10),
-                                            child: Text(
-                                              "\$${productData.price}",
-                                              style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),
-                                              maxLines: 2,
+                                            Container(
+                                              width: 235,
+                                              padding: const EdgeInsets.only(
+                                                  top: 5, left: 10),
+                                              child: Stars(
+                                                  rating: productData
+                                                      .rating.avargeRate),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 235,
-                                            padding: const EdgeInsets.only(
-                                                top: 5, left: 10),
-                                            child:const Text(
-                                              "Eligible for Free Shipping "
+                                            Container(
+                                              width: 235,
+                                              padding: const EdgeInsets.only(
+                                                  top: 5, left: 10),
+                                              child: Text(
+                                                "\$${productData.price}",
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold),
+                                                maxLines: 2,
+                                              ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 235,
-                                            padding: const EdgeInsets.only(
-                                                top: 5, left: 10),
-                                            child: Text(
-                                              "In Stock",
-                                              style: TextStyle(color: Colors.teal),
-                                              maxLines: 2,
+                                            Container(
+                                              width: 235,
+                                              padding: const EdgeInsets.only(
+                                                  top: 5, left: 10),
+                                              child: const Text(
+                                                  "Eligible for Free Shipping "),
                                             ),
-                                          ),
-                                        ],
+                                            Container(
+                                              width: 235,
+                                              padding: const EdgeInsets.only(
+                                                  top: 5, left: 10),
+                                              child: Text(
+                                                "In Stock",
+                                                style:
+                                                    TextStyle(color: Colors.teal),
+                                                maxLines: 2,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       )
                                     ]),
                                   ),

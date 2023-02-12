@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'package:amazon_clone/features/account/screens/account_screen.dart';
 import 'package:amazon_clone/models/cart.dart';
 import 'package:amazon_clone/models/order.dart';
@@ -9,9 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay/pay.dart';
-
-import '../../common/widget/widget.dart';
-import '../../features/auth/screens/auth_screen.dart';
+import '../common/widget/widget.dart';
 import '../../features/cart/cart_screen.dart';
 import '../../features/home/screens/home_screen.dart';
 import '../../models/add_product_res.dart';
@@ -64,11 +64,7 @@ class AmazonCubit extends Cubit<AmazonStates> {
       },
     )?.then((value) {
       userModel = UserModel.fromjson(value!.data);
-      print('sssss${value.data}');
-
       emit(AmazonSignUpSucccessState(userModel));
-
-      print("${userModel?.message}");
     }).onError((error, stackTrace) {
       if (kDebugMode) {
         print("eeeeeee ${error.toString()}");
@@ -91,7 +87,6 @@ class AmazonCubit extends Cubit<AmazonStates> {
     )?.then((value) {
       userModel = UserModel.fromjson(value!.data);
 
-      print(userModel!.data?.name);
       emit(AmazonSignInSucccessState(userModel));
     }).onError((error, stackTrace) {
       print("nnnnnnn${error.toString()}");
@@ -124,6 +119,14 @@ class AmazonCubit extends Cubit<AmazonStates> {
 
   void changCurrentIndexe(int index) {
     currentIndex = index;
+    if(index==0){
+      fetchDealOfDay();
+    }else
+    if(index==2){
+              getUserData();
+              }else if(index==1){
+             fetchMyOrders();
+              }
     emit(AmazonChangBottomNavState());
   }
 
@@ -132,13 +135,6 @@ class AmazonCubit extends Cubit<AmazonStates> {
     return name;
   }
 
-  List list = [
-    "https://images.unsplash.com/photo-1665513284188-661b9cb5c993?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDQ0fGFldTZyTC1qNmV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=400&q=60",
-    "https://images.unsplash.com/photo-1661002476948-cb7a646b5162?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDE5fGFldTZyTC1qNmV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=400&q=60",
-    "https://images.unsplash.com/photo-1662723635945-9804ed96f9af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDQ2fGFldTZyTC1qNmV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=400&q=60",
-    "https://images.unsplash.com/photo-1668184162944-7ce7cdf1fc35?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDI3fGFldTZyTC1qNmV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=400&q=60",
-    "https://images.unsplash.com/photo-1665513284188-661b9cb5c993?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDQ0fGFldTZyTC1qNmV3fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=400&q=60",
-  ];
   List<Map<String, String>> ImagesCategories = [
     {
       'title': 'Mobiles',
@@ -172,7 +168,6 @@ class AmazonCubit extends Cubit<AmazonStates> {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR05hWaItcRANv5UnCydfsoMQY2abZ7rGAMDg&usqp=CAU',
     'https://cdn.shopify.com/app-store/listing_images/ccd0c938e4f2ec4e88891f2ad934aba2/desktop_screenshot/CI3llPvt1PkCEAE=.jpeg?height=360&quality=90&width=640'
   ];
- 
 
   AddProductRes? res;
   List<Product>? categoryProducsList;
@@ -195,10 +190,9 @@ class AmazonCubit extends Cubit<AmazonStates> {
               );
             }
           }
-          print("5555${value.data.length}ooo${categoryProducsList?.length}");
+          // test for 1-categoryProducsList?.length
+          // 2-value.data.length
           res = AddProductRes.fromjson(value.data);
-          print(categoryProducsList?[1].images);
-
           emit(FetchCategoryProducsSeccessState(res));
         }).onError((error, stackTrace) {
           print(error.toString());
@@ -209,14 +203,17 @@ class AmazonCubit extends Cubit<AmazonStates> {
       }
     }
   }
-//////////////////////////////////////////////////////////////////////////////////////
-  List<Product>? searchProducsList;
+
+//**********************************************//
+
+  List<Product>? searchProducsList=[];
   void fetchSearchProduct({String? search}) async {
     emit(FetchSearchProducLoudingState());
     searchProducsList = [];
     var token = CacheHelper.getData1(key: 'token');
     try {
       DioHelper.getData(
+        //:prams -->  search
         url: "${FETCHSEARCHPRODUCTS}/${search}",
         token: token,
       )?.then((value) {
@@ -227,10 +224,10 @@ class AmazonCubit extends Cubit<AmazonStates> {
             );
           }
         }
-        print("5555${value.data.length}ooo${searchProducsList?.length}");
+        // test for
+        // 1-searchProducsList?.length
+        // 2-value.data.length
         res = AddProductRes.fromjson(value.data);
-        print(searchProducsList?[0].images);
-
         emit(FetchSearchProducsSeccessState(res));
       }).onError((error, stackTrace) {
         print(error.toString());
@@ -289,28 +286,32 @@ class AmazonCubit extends Cubit<AmazonStates> {
   }
 
   Product productDay = Product(
-      id: '',
-      category: '',
-      description: '',
-      images: [],
-      name: '',
-      price: 2,
-      quantity: 2,
-      rating: RatingProuduct(myRating: 5, avargeRate: 5, rating: []));
+    id: '',
+    category: '',
+    description: '',
+    images: [
+     // 'https://res.cloudinary.com/dzkln2dox/image/upload/v1675548080/wireless%20charger%20/x9hftncitivmpfs2hm6b.webp'
+    ],
+    name: '',
+    price: 2,
+    quantity: 2,
+    rating: RatingProuduct(
+      myRating: 5,
+      avargeRate: 5,
+      rating: [],
+    ),
+  );
   void fetchDealOfDay() async {
     emit(FetchDealOfDayLoudingState());
-    categoryProducsList = [];
     var token = CacheHelper.getData1(key: 'token');
     try {
       DioHelper.getData(
         url: FETCHDEALOFDAY,
         token: token,
-        // query: {"category":category}
       )?.then((value) {
         if (value?.data != null) {
           productDay = Product.fromjson(value?.data);
         }
-
         res = AddProductRes.fromjson(value!.data);
         emit(FetchDealOfDaySeccessState(res));
       }).onError((error, stackTrace) {
@@ -327,40 +328,41 @@ class AmazonCubit extends Cubit<AmazonStates> {
   }) async {
     var token = CacheHelper.getData1(key: 'token');
     var userId = CacheHelper.getData1(key: 'id');
-    if(product?.quantity!= 0){
-     try {
-      emit(AddToCartLoudingState());
+    if (product?.quantity != 0) {
+      try {
+        emit(AddToCartLoudingState());
 
-      DioHelper.postData(
-        url: ADDTOCART,
-        data: {
-          "id": product!.id,
-          "userId": userId,
-        },
-        token: token,
-      )?.then((value) {
-        userModel = UserModel.fromjson(value!.data);
-        getSum();
-        emit(AddToCartSeccessState());
-      }).onError((
-        error,
-        stackTrace,
-      ) {
-        ShowToast(text: error.toString(), state: ToastStates.ERROR);
+        DioHelper.postData(
+          url: ADDTOCART,
+          data: {
+            "id": product!.id,
+            "userId": userId,
+          },
+          token: token,
+        )?.then((value) {
+          userModel = UserModel.fromjson(value!.data);
+          getSum();
+          emit(AddToCartSeccessState());
+        }).onError((
+          error,
+          stackTrace,
+        ) {
+          ShowToast(text: error.toString(), state: ToastStates.ERROR);
+          emit(AddToCartErorrState());
+          getSum();
+        });
+      } catch (e) {
+        ShowToast(text: e.toString(), state: ToastStates.ERROR);
         emit(AddToCartErorrState());
         getSum();
-      });
-    } catch (e) {
-      ShowToast(text: e.toString(), state: ToastStates.ERROR);
-      emit(AddToCartErorrState());
-      getSum();
+      }
+    } else {
+      ShowToast(
+          text: '${product?.name} is out of stock!', state: ToastStates.ERROR);
     }
-    }else{
-       ShowToast(text:'${product?.name} is out of stock!', state: ToastStates.ERROR);
-    }
-    
   }
 
+// to get cart products
   void getUserData({
     bool inStart = false,
   }) async {
@@ -375,7 +377,6 @@ class AmazonCubit extends Cubit<AmazonStates> {
           data: {
             "userId": userId,
           },
-          // query: {"category":category}
         )?.then((value) {
           userModel = UserModel.fromjson(value!.data);
           getSum();
@@ -396,7 +397,8 @@ class AmazonCubit extends Cubit<AmazonStates> {
   double getSum() {
     paymentItems = [];
     if (userModel!.data!.cart!.cart!.length.compareTo(0) == 0) {
-      return sum;
+      sum=0;
+      return 0;
     } else {
       try {
         sum = 0;
@@ -421,7 +423,7 @@ class AmazonCubit extends Cubit<AmazonStates> {
     var userId = CacheHelper.getData1(key: 'id');
     try {
       emit(RemoveFromCartLoudingState());
-      
+
       DioHelper.postData(
         url: REMOVEFROMCART,
         data: {
@@ -433,9 +435,10 @@ class AmazonCubit extends Cubit<AmazonStates> {
         userModel = UserModel.fromjson(value!.data);
         getSum();
         emit(RemoveFromCartSeccessState());
-      print("sss${userModel!.data!.cart?.toJson()}");
+        print("sss${userModel!.data!.cart?.toJson()}");
       }).onError((
         error,
+        
         stackTrace,
       ) {
         ShowToast(text: error.toString(), state: ToastStates.ERROR);
@@ -449,43 +452,47 @@ class AmazonCubit extends Cubit<AmazonStates> {
     }
   }
 
+  //for address form
   var flatBuildingController = TextEditingController();
   var areaController = TextEditingController();
   var pincodeController = TextEditingController();
   var cityController = TextEditingController();
-   var adressFormKey = GlobalKey<FormState>();
+  var addressFormKey = GlobalKey<FormState>();
   void onGooglePayResult(res) {
-    if(userModel!.data!.address!.isEmpty){
-     // saveUserAddress();
+    if (userModel!.data!.address!.isEmpty) {
+      // saveUserAddress();
     }
   }
+
   List<PaymentItem> paymentItems = [];
   String addressToBeUsed = '';
 
   void paypress() {
+    //User address
     String addressToBeUsed = '';
     bool isForm = flatBuildingController.text.isNotEmpty ||
         areaController.text.isNotEmpty ||
         pincodeController.text.isNotEmpty ||
         cityController.text.isNotEmpty;
-    if(isForm){
-      if(adressFormKey.currentState!.validate()){
-        addressToBeUsed='${flatBuildingController.text},${flatBuildingController.text},${areaController.text},${cityController.text} - ${pincodeController.text}';
-      }else{
+    if (isForm) {
+      if (addressFormKey.currentState!.validate()) {
+        addressToBeUsed =
+            '${flatBuildingController.text},${flatBuildingController.text},${areaController.text},${cityController.text} - ${pincodeController.text}';
+      } else {
         throw Exception('Plese inter all values ');
       }
-    } else if(userModel!.data!.address!.isNotEmpty){
-      addressToBeUsed=userModel!.data!.address! ;
-    }else{
-      ShowToast(text: 'Plese inter address value', state:ToastStates.WARNING );
+    } else if (userModel!.data!.address!.isNotEmpty) {
+      addressToBeUsed = userModel!.data!.address!;
+    } else {
+      ShowToast(text: 'Plese inter address value', state: ToastStates.WARNING);
     }
+    //print User address
     print(addressToBeUsed);
     placeOrder(addressToBeUsed);
     saveUserAddress(addressToBeUsed1: addressToBeUsed);
   }
-   
-  void saveUserAddress({required String addressToBeUsed1}) async 
-  {
+
+  void saveUserAddress({required String addressToBeUsed1}) async {
     var token = CacheHelper.getData1(key: 'token');
     try {
       emit(SaveUserAddressLoudingState());
@@ -494,73 +501,65 @@ class AmazonCubit extends Cubit<AmazonStates> {
               url: SAVEUSERADDRESS,
               data: {
                 "address": addressToBeUsed1,
-                },
+              },
               token: token)
           ?.then((value) {
-             userModel = UserModel.fromjson(value!.data);
-        print(value.data);
+        userModel = UserModel.fromjson(value!.data);
         emit(SaveUserAddressSeccessState());
-        
       }).onError((error, stackTrace) {
         print(error.toString());
         emit(SaveUserAddressErorrState());
-
-       
       });
     } catch (e) {
       ShowToast(text: e.toString(), state: ToastStates.ERROR);
     }
   }
 
-  void placeOrder(String addressToBeUseds)async{
-
-   emit(PlaceOrderLoudingState());
-   var token = CacheHelper.getData1(key: 'token');
-   print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-
- Map<String, dynamic>? cart= userModel!.data!.cart?.toJson();
- print(cart!['cart']);
-  try{
-   DioHelper.postData(
+  void placeOrder(String addressToBeUseds) async {
+    emit(PlaceOrderLoudingState());
+    var token = CacheHelper.getData1(key: 'token');
+    Map<String, dynamic>? cart = userModel!.data!.cart?.toJson();
+    print(cart!['cart']);
+    try {
+      DioHelper.postData(
               url: ORDER,
               data: {
-                "cart":cart['cart'] ,
-                "address":addressToBeUseds,
-                "totalPrice":sum,
+                "cart": cart['cart'],
+                "address": addressToBeUseds,
+                "totalPrice": sum,
               },
               token: token)
           ?.then((value) {
-            fetchMyOrders(newOrder: true);
+        fetchMyOrders(newOrder: true);
         userModel!.data!.cart?.cart = <Cart>[];
         sum = 0;
         print(value!.data);
-        ShowToast(text: 'Your Order Has Been Placed!', state: ToastStates.SUCCESS);
-        emit(PlaceOrderSeccessState()); 
+        ShowToast(
+            text: 'Your Order Has Been Placed!', state: ToastStates.SUCCESS);
+        emit(PlaceOrderSeccessState());
       }).onError((error, stackTrace) {
         print(error.toString());
         ShowToast(text: error.toString(), state: ToastStates.ERROR);
         emit(PlaceOrderErorrState());
       });
-   }catch(e)
-   {
-    ShowToast(text: e.toString(), state: ToastStates.ERROR);
-   }
- 
-   //print(productList);
-}  
- List<Order>? ordersList;
+    } catch (e) {
+      ShowToast(text: e.toString(), state: ToastStates.ERROR);
+    }
+
+    //print(productList);
+  }
+
+  List<Order>? ordersList = [] ;
   void fetchMyOrders({bool newOrder = false}) async {
-if (ordersList?.length == 0 ||
-        ordersList == null ||
-        newOrder) {
+    if (ordersList?.length == 0 || ordersList == null || newOrder) {
       emit(FetchMyOrdersLoudingState());
       ordersList = [];
       var token = CacheHelper.getData1(key: 'token');
       try {
         DioHelper.getData(
-            url: MYORDER,
-            token: token,
-            )?.then((value) {
+          url: MYORDER,
+          token: token,
+        )?.then((value) {
           for (int i = 0; i < value!.data.length; i++) {
             if (value.data['$i'] != null) {
               ordersList?.add(
@@ -568,12 +567,14 @@ if (ordersList?.length == 0 ||
               );
             }
           }
-          print("5555${value.data.length}ooo${ordersList?.length}");
+
+          // test for
+          // 1-ordersList?.length
+          // 2-value.data.length
           res = AddProductRes.fromjson(value.data);
           print(ordersList?[1].orders?[0].quantity);
-          if(res?.status==false){
-          ShowToast(text: res!.msg.toString()
-          , state: ToastStates.ERROR);  
+          if (res?.status == false) {
+            ShowToast(text: res!.msg.toString(), state: ToastStates.ERROR);
           }
           emit(FetchMyOrdersSeccessState(res));
         }).onError((error, stackTrace) {
@@ -582,13 +583,8 @@ if (ordersList?.length == 0 ||
         });
       } catch (e) {
         ShowToast(text: e.toString(), state: ToastStates.ERROR);
-         emit(FetchMyOrdersErorrState());
+        emit(FetchMyOrdersErorrState());
       }
     }
   }
-
-
-
-
-
 }

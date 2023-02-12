@@ -1,14 +1,10 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'dart:convert';
 import 'dart:io';
-
-import 'package:amazon_clone/common/widget/widget.dart';
+import 'package:amazon_clone/shard/common/widget/widget.dart';
 import 'package:amazon_clone/features/admin/screens/analyticsScreen/analytics_screen.dart';
 import 'package:amazon_clone/features/admin/screens/ordersScreeen/orders_screen.dart';
 import 'package:amazon_clone/models/order.dart';
 import 'package:amazon_clone/models/product.dart';
-import 'package:amazon_clone/models/sales.dart';
 import 'package:amazon_clone/models/sales.dart';
 import 'package:amazon_clone/shard/admin_cubit/states.dart';
 import 'package:amazon_clone/shard/network/end_point.dart';
@@ -16,8 +12,6 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../features/account/screens/account_screen.dart';
 import '../../features/admin/screens/posts_screen.dart';
 import '../../models/add_product_res.dart';
 import '../network/local/cache_helper.dart';
@@ -34,6 +28,9 @@ class AdminCubit extends Cubit<AdminStates> {
 
   int currentIndex = 0;
   void changCurrentIndexe(int index) {
+    if(index==0){
+      fetchAllProduct();
+    }
     currentIndex = index;
     emit(NavState());
   }
@@ -143,7 +140,6 @@ class AdminCubit extends Cubit<AdminStates> {
                 Product.fromjson(value.data['$i']),
               );
           }
-          print("5555${value.data.length}ooo${productList?.length}");
           res = AddProductRes.fromjson(value.data);
           print(productList?[1].images);
 
@@ -167,8 +163,7 @@ class AdminCubit extends Cubit<AdminStates> {
       DioHelper.postData(url: DELETPRODUCT, data: {"id": id}, token: token)
           ?.then((value) {
         res = AddProductRes.fromjson(value!.data);
-        productList!.removeAt(index!.toInt());
-
+        productList!.removeAt(index!.toInt()); // remove  now
         emit(DeletProductSeccessState());
       }).onError((error, stackTrace) {
         print(error.toString());
@@ -181,7 +176,7 @@ class AdminCubit extends Cubit<AdminStates> {
 
   List<Order>? ordersList = [];
   void fetchAllOrders() async {
-    if (ordersList?.length == 0 || ordersList == null) {
+    if (ordersList?.length == 0 ) {
       emit(FetchAllOrdersLoudingState());
       ordersList = [];
       var token = CacheHelper.getData1(key: 'token');
@@ -194,7 +189,6 @@ class AdminCubit extends Cubit<AdminStates> {
               );
             }
           }
-          print("5555${value.data.length}ooo${ordersList?.length}");
           res = AddProductRes.fromjson(value.data);
           print(ordersList?[1].orders?[0].quantity);
           if (res?.status == false) {
@@ -209,7 +203,6 @@ class AdminCubit extends Cubit<AdminStates> {
         ShowToast(text: e.toString(), state: ToastStates.ERROR);
         emit(FetchAllOrderstErrorState());
       }
-
       //print(productList);
 
     }
@@ -248,7 +241,7 @@ class AdminCubit extends Cubit<AdminStates> {
   }
 
   int totalEarning = 0;
-  List<Sales>? sales=[] ; 
+  List<Sales>? sales = [];
   void getEarnings() async {
     if (sales!.length == 0 || sales == null) {
       emit(GetEarningsLoudingState());
@@ -257,14 +250,25 @@ class AdminCubit extends Cubit<AdminStates> {
         DioHelper.getData(url: GETANALYTICS, token: token)?.then((value) {
           totalEarning = value!.data['earnings']['totalEarning'];
           sales = [
-            Sales(label: 'Mobile', earning: value.data['earnings']['mobileEarnings']),
-            Sales( label: 'Essentials', earning: value.data['earnings']['essentialsEarnings']),
-            Sales(label: 'Appliances', earning: value.data['earnings']['appliancesEarnings']),
-            Sales(label: 'Books', earning: value.data['earnings']['booksEarnings']),
-            Sales(label: 'Fashion', earning: value.data['earnings']['fashionEarnings']),
-            Sales(label: 'Electronics', earning: value.data['earnings']['electronicsEarnings']),
+            Sales(
+                label: 'Mobile',
+                earning: value.data['earnings']['mobileEarnings']),
+            Sales(
+                label: 'Essentials',
+                earning: value.data['earnings']['essentialsEarnings']),
+            Sales(
+                label: 'Appliances',
+                earning: value.data['earnings']['appliancesEarnings']),
+            Sales(
+                label: 'Books',
+                earning: value.data['earnings']['booksEarnings']),
+            Sales(
+                label: 'Fashion',
+                earning: value.data['earnings']['fashionEarnings']),
+            Sales(
+                label: 'Electronics',
+                earning: value.data['earnings']['electronicsEarnings']),
           ];
-            print("5555${value.data.length}ooo${sales?.length}");
           res = AddProductRes.fromjson(value.data);
           if (res?.status == false) {
             ShowToast(text: res!.msg.toString(), state: ToastStates.ERROR);

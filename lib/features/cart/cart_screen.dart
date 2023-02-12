@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../common/widget/widget.dart';
-import '../../constants/global_variables.dart';
+import '../../../shard/common/widget/widget.dart';
+import '../../shard/constants/global_variables.dart';
 import '../../shard/cubit/cubit.dart';
 import '../../shard/cubit/stats.dart';
 import '../address/address_screen.dart';
@@ -69,7 +67,7 @@ class CartScreen extends StatelessWidget {
                                       width: 1,
                                     ),
                                   ),
-                                  hintText: "Search Amazon.in",
+                                  hintText: "Search Amazon.eg",
                                   hintStyle: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 17,
@@ -96,10 +94,11 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
             ),
-            body: SingleChildScrollView(
+
+            body:cubit.userModel?.data?.cart!.cart!.length==null? const Center(child: CircularProgressIndicator()): SingleChildScrollView(
               child: Column(
                 children: [
-                  AdderssBox(name: "Eid", address: ""),
+                  AdderssBox(name: "Eid", address: "${cubit.userModel!.data!.address}"),
                   const SizedBox(height: 5),
                   Container(
                     margin: const EdgeInsets.all(10.0),
@@ -162,8 +161,8 @@ class CartScreen extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10.0),
                                       child: Text(
-                                        (cubit.userModel?.data!.cart!.cart![index]
-                                                .product!.name)
+                                        (cubit.userModel?.data!.cart!
+                                                .cart![index].product!.name)
                                             .toString(),
                                         style: TextStyle(fontSize: 16),
                                         maxLines: 2,
@@ -171,8 +170,8 @@ class CartScreen extends StatelessWidget {
                                     ),
                                     Container(
                                       width: 235,
-                                      padding:
-                                          const EdgeInsets.only(top: 5, left: 10),
+                                      padding: const EdgeInsets.only(
+                                          top: 5, left: 10),
                                       child: Stars(
                                           rating: (cubit
                                                   .userModel
@@ -186,8 +185,8 @@ class CartScreen extends StatelessWidget {
                                     ),
                                     Container(
                                       width: 235,
-                                      padding:
-                                          const EdgeInsets.only(top: 5, left: 10),
+                                      padding: const EdgeInsets.only(
+                                          top: 5, left: 10),
                                       child: Text(
                                         "\$${cubit.userModel?.data!.cart!.cart![index].product!.price}",
                                         style: TextStyle(
@@ -198,15 +197,15 @@ class CartScreen extends StatelessWidget {
                                     ),
                                     Container(
                                       width: 235,
-                                      padding:
-                                          const EdgeInsets.only(top: 5, left: 10),
+                                      padding: const EdgeInsets.only(
+                                          top: 5, left: 10),
                                       child: const Text(
                                           "Eligible for Free Shipping "),
                                     ),
                                     Container(
                                       width: 235,
-                                      padding:
-                                          const EdgeInsets.only(top: 5, left: 10),
+                                      padding: const EdgeInsets.only(
+                                          top: 5, left: 10),
                                       child: Text(
                                         "In Stock",
                                         style: TextStyle(color: Colors.teal),
@@ -237,7 +236,6 @@ class CartScreen extends StatelessWidget {
                                           cubit.removeFromCart(
                                               product: cubit.userModel?.data!
                                                   .cart!.cart![index].product);
-                                     
                                         },
                                         child: Container(
                                           height: 32,
@@ -264,7 +262,6 @@ class CartScreen extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                         
                                           cubit.addToCart(
                                               product: cubit.userModel?.data!
                                                   .cart!.cart![index].product);

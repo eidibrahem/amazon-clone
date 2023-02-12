@@ -1,14 +1,9 @@
-
-
-import 'package:amazon_clone/constants/global_variables.dart';
+import '../../../shard/constants/global_variables.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../shard/admin_cubit/cubit.dart';
 import '../../../shard/admin_cubit/states.dart';
-import '../../../shard/cubit/cubit.dart';
-import '../../../shard/cubit/stats.dart';
 
 class AdminLayout extends StatelessWidget {
   const AdminLayout( {Key? key}) : super(key: key);

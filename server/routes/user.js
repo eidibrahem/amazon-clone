@@ -3,8 +3,9 @@ const auth = require("../middlewares/auth");
 const userRouter = express.Router();
 const User = require("../models/user");
 const { Product } = require("../models/product");
+
 const Order = require("../models/order");
-userRouter.post("/api/add-to-cart", async (req, res) => {
+userRouter.post("/api/add-to-cart",auth, async (req, res) => {
   try {
     const { id, userId } = req.body;
     var product = await Product.findById(id);
@@ -50,7 +51,7 @@ userRouter.post("/api/add-to-cart", async (req, res) => {
     res.json({ status: false, msg: e.message });
   }
 });
-userRouter.post("/api/get-user-data", async (req, res) => {
+userRouter.post("/api/get-user-data",auth, async (req, res) => {
   try {
     const { userId } = req.body;
     let user = await User.findById(userId);
@@ -72,7 +73,7 @@ userRouter.post("/api/get-user-data", async (req, res) => {
     res.json({ status: false, msg: e.message });
   }
 });
-userRouter.post("/api/remove-from-cart", async (req, res) => {
+userRouter.post("/api/remove-from-cart",auth, async (req, res) => {
   try {
     const { id, userId } = req.body;
     var product = await Product.findById(id);

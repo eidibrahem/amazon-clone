@@ -1,4 +1,5 @@
-import 'package:amazon_clone/constants/global_variables.dart';
+
+import '/../shard/constants/global_variables.dart';
 import 'package:amazon_clone/features/order_detials/order_detials_admin_screen.dart';
 import 'package:badges/badges.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
