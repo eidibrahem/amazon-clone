@@ -1,7 +1,7 @@
 # amazon_clone
 
 E-commerce application .
-
+(flutter - State management With Block - Backend Node js - Database Mongo DB)
 ## User Features 🤖  
   
 
